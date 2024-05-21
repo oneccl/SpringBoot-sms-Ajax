@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>超市订单管理系统</title>
+    <link type="text/css" rel="stylesheet" href="../css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="../css/public.css"/>
+</head>
+<body>
+<!--头部-->
+<header class="publicHeader">
+    <h1>超市订单管理系统</h1>
+    <div class="publicHeaderR">
+        <p><span>下午好！</span><span style="color: #fff21b"> 系统管理员</span> , 欢迎你！</p>
+        <a href="login.html">退出</a>
+    </div>
+</header>
+<!--时间-->
+<section class="publicTime">
+    <span id="time">2015年1月1日 11:11  星期一</span>
+    <a href="#">温馨提示：为了能正常浏览，请使用高版本浏览器！（IE10+）</a>
+</section>
+<!--主体内容-->
+<section class="publicMian ">
+    <div class="left">
+        <h2 class="leftH2"><span class="span1"></span>功能列表 <span></span></h2>
+        <nav>
+            <ul class="list">
+                <li><a href="#">订单管理</a></li>
+                <li><a href="#">供应商管理</a></li>
+                <li><a href="userList.html">用户管理</a></li>
+                <li><a href="#">密码修改</a></li>
+                <li><a href="login.html">退出系统</a></li>
+            </ul>
+        </nav>
+    </div>
+    <input type="hidden" id="path" name="path" value="/SMBMS"/>
+    <input type="hidden" id="referer" name="referer"
+           value="http://localhost:8080jsp/provider.do?method=query&queryProCode=&queryProName="/>
+    <div class="right" id="vueRight">
+        <div class="location">
+            <strong>你现在所在的位置是:</strong>
+            <span>用户管理页面</span>
+        </div>
+        <div class="search">
+            <form method="get" action="#">
+                <input name="method" value="query" class="input-text" type="hidden">
+                <span>用户名：</span>
+                <input name="queryname" class="input-text" type="text" value="">
+
+                <span>用户角色：</span>
+                <select name="queryUserRole">
+                    <option value="0">--请选择--</option>
+                    <option value="1">系统管理员</option>
+                    <option value="2">经理</option>
+                    <option value="3">普通员工</option>
+                </select>
+                <input type="hidden" name="pageIndex" value="1"/>
+                <input value="查 询" type="submit" id="searchbutton">
+                <a href="userAdd.html">添加用户</a>
+            </form>
+        </div>
+        <!--用户-->
+        <table class="providerTable" cellpadding="0" cellspacing="0">
+            <tr class="firstTr">
+                <th width="10%">用户编码</th>
+                <th width="20%">用户名称</th>
+                <th width="10%">性别</th>
+                <th width="10%">年龄</th>
+                <th width="10%">电话</th>
+                <th width="10%">用户角色</th>
+                <th width="30%">操作</th>
+            </tr>
+            <tr v-for="user in jsonUsers">
+                <td>
+                    <span v-text="user.userCode">null</span>
+                </td>
+                <td>
+                    <span v-text="user.userName">null</span>
+                </td>
+                <td>
+                    <span v-if="user.gender === 1">男</span>
+                    <span v-if="user.gender === 2">女</span>
+                </td>
+                <td>
+                    <span v-text="user.age">null</span>
+                </td>
+                <td>
+                    <span v-text="user.phone">null</span>
+                </td>
+                <td>
+                    <span v-text="user.role.roleName">null</span>
+                </td>
+                <td>
+                    <span><a class="viewUser" href="userShow.html">
+                        <img src="../images/read.png" alt="查看" title="查看"/></a></span>
+                    <span><a class="modifyUser" href="userUpdate.html">
+                        <img src="../images/xiugai.png" alt="修改" title="修改"/></a></span>
+                    <span><a class="deleteUser" href="#">
+                        <img src="../images/schu.png" alt="删除" title="删除"/></a></span>
+                </td>
+            </tr>
+
+        </table>
+        <input type="hidden" id="totalPageCount" value="3"/>
+
+        <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+        <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Insert title here</title>
+            <script type="text/javascript">
+            </script>
+        </head>
+        <body>
+        <div class="page-bar">
+            <ul class="page-num-ul clearfix">
+                <li>共12条记录&nbsp;&nbsp; 1/3页</li>
+                <a href="javascript:page_nav(document.forms[0],2);">下一页</a>
+                <a href="javascript:page_nav(document.forms[0],3);">最后一页</a>
+                &nbsp;&nbsp;
+            </ul>
+            <span class="page-go-form"><label>跳转至</label>
+	     <input type="text" name="inputPage" id="inputPage" class="page-key"/>页
+	     <button type="button" class="page-btn"
+                 onClick='jump_to(document.forms[0],document.getElementById("inputPage").value)'>GO</button>
+		</span>
+        </div>
+        </body>
+        <script type="text/javascript" src="../js/rollpage.js"></script>
+        </html>
+    </div>
+</section>
+
+<!--点击删除按钮后弹出的页面-->
+<div class="zhezhao"></div>
+<div class="remove" id="removeUse">
+    <div class="removerChid">
+        <h2>提示</h2>
+        <div class="removeMain">
+            <p>你确定要删除该用户吗？</p>
+            <a href="#" id="yes">确定</a>
+            <a href="#" id="no">取消</a>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    版权归XXXX
+</footer>
+<script type="text/javascript" src="../js/time.js"></script>
+<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript" src="../calendar/WdatePicker.js"></script>
+</body>
+</html>
+<script src="../vue/vue.js"></script>
+<!--导入axios的js文件(官方路径)-->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    $(function () {
+        /*  方式1  */
+
+        $.ajax({
+            type:"post",
+            url:"http://localhost:8080/getUsers.do",
+            dataType:"text",
+            success:function (userList) {
+                //alert(userList);
+                // 转换为Json对象
+                var list = JSON.parse(userList);
+                // 创建vue核心对象，用于数据绑定
+                var vue = new Vue({
+                    // el: 指定vue的作用范围/视图view：使用id选择器选中的div:vueRight
+                    el: '#vueRight',
+                    // data: 用来声明数据模型model，该数据模型可以被填充到el指定的视图中
+                    // 将响应的数据赋值给数据模型
+                    data: {
+                        jsonUsers:list
+                    }
+
+                    // data()是ECMAScript6(es6)版本新的写法
+                    // ECMA:标准化组织；ECMAScript是JavaScript的下一代标准，是对JS语法的优化，提供了许多新特性
+                    // data(){
+                    //     return {
+                    //         jsonUsers:list
+                    //     }
+                    // }
+                })
+            },
+            error:function (err) {
+                alert("服务器错误!")
+            }
+        })
+
+        /*  方式2(简写：适用于没有传递数据或传递数据很少的Ajax请求)  */
+
+        // $.getJSON("http://localhost:8080/getUsers.do",function (userList) {
+        //     // userList：已被转换为Json对象
+        //     var vue = new Vue({
+        //         el: '#vueRight',
+        //         data: {
+        //             jsonUsers:userList
+        //         }
+        //     })
+        // })
+
+        /*  方式3(基于axios的异步请求)  */
+
+        // axios: 是一个可用于浏览器和node.js的异步通信框架，主要用于实现Ajax异步通信
+        // 特点：支持Promise API(JS中链式编程)；自动转换JSON数据等
+        // axios通过get()或post()发送请求；then()代表响应成功后的处理事件，多个事件间可使用,分割；catch()代表异常处理
+        // 使用需要导入axios的js文件：https://unpkg.com/axios/dist/axios.min.js
+
+        // axios.get("http://localhost:8080/getUsers.do").then(function (userList) {
+        //     new Vue({
+        //         el: '#vueRight',
+        //         data(){
+        //             return {
+        //                 jsonUsers:userList
+        //             }
+        //         }
+        //     })
+        // }).catch(function (err) {
+        //     console.log(err);
+        // })
+
+    })
+
+    /*  方式4(vue与axios整合并使用mounted()钩子函数)  */
+
+    // new Vue({
+    //     el: '#vueRight',
+    //     data(){
+    //         return {
+    //             jsonUsers: {}
+    //         }
+    //     },
+    //     mounted(){
+    //         // this指向的是vue实例本身，axios回调函数中的this已经改变，无法访问到data中的数据
+    //         // 需要先将this保存起来，在回调函数中使用已保存的this对象
+    //         const th = this;
+    //         axios({
+    //             method:"get",
+    //             url:"http://localhost:8080/getUsers.do"
+    //         }).then(function (userList) {
+    //             // 将响应的数据赋值给data中的数据模型jsonUsers
+    //             th.jsonUsers = userList.data;
+    //         })
+    //     },
+    //     // 使用自定义方法
+    //     // methods:{
+    //     //     getJsonUsers:function () {
+    //     //         const th = this;
+    //     //         axios({
+    //     //             method:"get",
+    //     //             url:"http://localhost:8080/getUsers.do"
+    //     //         }).then(function (userList) {
+    //     //             th.jsonUsers = userList.data;
+    //     //         })
+    //     //     }
+    //     // }
+    // })
+
+    // vue.js
+    /*
+    1、vue是一套构建用户界面的渐进式(核心+扩展，主张考虑最少)框架，主要用于JS中的DOM简化操作和实现数据双向绑定，就是一个JS库
+    vue只关注视图层view，采用自底向上(渐进式，逐层)增量开发的设计，能够为复杂的单页web应用(SPA)提供驱动
+    2、单页web应用(SPA)：Single Page Web Application，vue框架通过DOM操作实时改变视图view(html页面)中的
+    html文件节点和文件元素的属性和值，从始至终只操作一个html页面
+    3、node.js: node是一个基于V8引擎的JavaScript运行环境，它使得JS可以运行在服务端，直接与操作系统
+    进行交互；node就是一个运行在服务端的JS；vue项目必须安装node
+    4、双向绑定：指当模型数据发生变化时，视图(页面)展示会随之发生变化；而当表单数据发生变化时，绑定的模型数据也随之发生变化
+    MVC模式：只实现了模型(Model)通过Controller到视图(View)的单向数据绑定
+    MVVM(Model View ViewModel)模式：Model和View通过ViewModel对象(vue提供)进行双向数据绑定
+    5、vue常用指令
+    1）v-text: 文本替换，{{}}不能替换节点的内容 如v-text="user.name"
+    2）v-bind: 为html标签绑定属性值，如设置href,css样式等（单向绑定）如v-bind:value或:value、v-bind:href或:href等
+    3）v-model: 为表单元素创建数据双向绑定（只能用于用户交互组件中，如input标签）如v-model="username"
+    4）v-on: 事件绑定（事件监听）如v-on:click="f()"或@click="f()"，其中函数f()写在methods中
+    5）v-if: 条件判断，为true时渲染 如v-if="user.gender==1"
+    6）v-else: 与v-if连用，否则渲染
+    7）v-for: 遍历集合类型(索引变量为可选)
+    <标签 v-for="(变量名,索引变量i) in 集合模型数据">
+        <!--索引变量i是从0开始，所以要表示序号的话，需要手动的加1-->
+        {{索引变量i + 1}} {{变量名}}
+    </标签>
+    6、vue实例的生命周期
+    每个Vue实例在被创建时都要经过一系列的初始化过程；如设置数据监听、编译模板、将实例挂载到DOM并在数据变化时更新DOM等
+    同时在这个过程中也会运行一些叫做生命周期钩子的函数，这给了用户在不同阶段添加自己的代码的机会
+    vue实例的生命周期有8个阶段；其中mounted表示挂载完成，vue初始化成功，html页面渲染成功；我们会在该方法中发送异步请求，加载数据
+    7、vue的使用
+    1）导入vue的js文件：https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js
+    2）在script标签中(JS代码区域)创建vue核心对象，进行数据绑定
+      el: 指定vue的作用范围/视图view
+      data: 用来声明数据模型model，该数据模型可以被填充到el指定的视图中
+      methods: 用来声明函数，处理逻辑
+    3）使用vue指令编写视图
+    */
+
+</script>
